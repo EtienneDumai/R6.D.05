@@ -1,0 +1,3 @@
+Plusieurs lignes identiques répétées dans les fct accélerer et ralentir de voiture
+Pas de commentaire explicite
+Nombre magique dans la fct estAdulte()
