@@ -18,8 +18,8 @@ public class Car {
     }
 
     public void accelerate() {
-        if (speed + INCREASE_SPEED <= MAX_SPEED) {
-            speed += INCREASE_SPEED;
+        if (this.speed + INCREASE_SPEED <= MAX_SPEED) {
+            this.speed += INCREASE_SPEED;
             // afficher détails
             printDetails();
         } else {
@@ -52,16 +52,16 @@ public class Car {
         System.out.println("Color : " + color);
         System.out.println("Actual speed : " + speed);
     }
-    public void changeSpeed(final Car car, final int newSpeed, final Driver driver) {
+    public void changeSpeed(final int newSpeed, final Driver driver) {
         System.out.println(driver.getName() + " change car speed to " + newSpeed);
         int actualSpeed;
-        if (car.getSpeed() >= newSpeed) {
-            while (car.getSpeed() > newSpeed) {
-                car.slowDown();
+        if (this.getSpeed() >= newSpeed) {
+            while (this.getSpeed() > newSpeed) {
+                this.slowDown();
             }
         } else  {
-            while (car.getSpeed() < newSpeed) {
-                car.accelerate();
+            while (this.getSpeed() < newSpeed) {
+                this.accelerate();
             }
         }
     }

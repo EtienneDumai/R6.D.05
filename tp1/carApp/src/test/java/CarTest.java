@@ -12,62 +12,185 @@ public class CarTest {
 
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
     private Car car;
-    private Driver me;
+    private Driver driver;
 
     @BeforeEach
     public void setUp() {
-        car = new Car("Sedan", "Bleu");
         System.setOut(new PrintStream(outputStreamCaptor));
+        car = new Car("Sedan", "Bleu");
+        driver = new Driver("John", 25);
     }
+
     @AfterEach
     public void tearDown() {
         System.setOut(standardOut);
     }
+
     @Test
-    public void testAccelerate() {
+    void givenNewCar_whenCreated_thenSpeedIsZero() {
+        // GIVEN
+        Car car = new Car("Sedan", "Bleu");
+
+        // WHEN
+        int speed = car.getSpeed();
+
+        // THEN
+        assertThat(speed).isEqualTo(0);
+    }
+
+    @Test
+    void givenCarStopped_whenAccelerate_thenSpeedBecomes10() {
+        // GIVEN
+        Car car = new Car("Sedan", "Bleu");
+
+        // WHEN
         car.accelerate();
+
+        // THEN
         assertThat(car.getSpeed()).isEqualTo(10);
     }
 
     @Test
-    public void testSlowDown() {
+    void givenCarAt10_whenSlowDown_thenSpeedBecomes0() {
+        // GIVEN
         car.accelerate();
+
+        // WHEN
         car.slowDown();
+
+        // THEN
         assertThat(car.getSpeed()).isEqualTo(0);
     }
 
     @Test
-    public void testStartCar() {
+    void givenCarStopped_whenSlowDown_thenMessageDisplayed() {
+        // GIVEN
         Car car = new Car("Sedan", "Bleu");
-        Driver me = new Driver("John", 25);
-        car.startCar(me);
-        // How to assert that the demarrerVoiture method was called?
+
+        // WHEN
+        car.slowDown();
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("the car is alreday stopped.");
     }
 
     @Test
-    public void testStopCar() {
-        Car car = new Car("Sedan", "Bleu");
-        Driver me = new Driver("John", 25);
-        car.stopCar(me);
-        // How to assert that the arreterVoiture method was called?
+    void givenAdultDriver_whenStartCar_thenCarStarts() {
+        // GIVEN
+        Driver driver = new Driver("John", 25);
+
+        // WHEN
+        car.startCar(driver);
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("John starting the car.");
     }
 
     @Test
-    public void testChangeSpeed() {
-        Car car = new Car("Sedan", "Bleu");
-        Driver me = new Driver("John", 25);
+    void givenMinorDriver_whenStartCar_thenRefused() {
+        // GIVEN
+        Driver youngDriver = new Driver("Tom", 7);
 
-        car.changeSpeed(car, 80, me);
+        // WHEN
+        car.startCar(youngDriver);
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("The driver does not respect the age limit.");
+    }
+
+    @Test
+    void givenDriver_whenStopCar_thenStopMessageDisplayed() {
+        // GIVEN
+        Driver driver = new Driver("John", 25);
+
+        // WHEN
+        car.stopCar(driver);
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("John stops the car.");
+    }
+
+    @Test
+    void givenCarStopped_whenChangeSpeedTo80_thenSpeedIs80() {
+        // GIVEN
+        int newSpeed = 80;
+
+        // WHEN
+        car.changeSpeed(newSpeed, driver);
+
+        // THEN
         assertThat(car.getSpeed()).isEqualTo(80);
     }
 
     @Test
-    public void testMaxSpeed() {
+    void givenCarAt80_whenChangeSpeedTo40_thenSpeedIs40() {
+        // GIVEN
+        car.changeSpeed(80, driver);
+
+        // WHEN
+        car.changeSpeed(40, driver);
+
+        // THEN
+        assertThat(car.getSpeed()).isEqualTo(40);
+    }
+
+    @Test
+    void givenCarAt110_whenAccelerate_thenSpeedIs120() {
+        // GIVEN
+        car.changeSpeed(110, driver);
+
+        // WHEN
+        car.accelerate();
+
+        // THEN
+        assertThat(car.getSpeed()).isEqualTo(120);
+    }
+
+    @Test
+    void givenCarAtMaxSpeed_whenAccelerate_thenMessageDisplayed() {
+        // GIVEN
+        car.changeSpeed(120, driver);
+        outputStreamCaptor.reset();
+
+        // WHEN
+        car.accelerate();
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("Max speed has been reached.");
+    }
+
+    @Test
+    void givenCar_whenPrintDetails_thenModelColorAndSpeedPrinted() {
+        // GIVEN
         Car car = new Car("Sedan", "Bleu");
-        Driver me = new Driver("John", 25);
-        car.changeSpeed(car, 200, me);
-        assertThat( outputStreamCaptor.toString()
-                .trim()).contains("Max speed has been reached.");
+
+        // WHEN
+        car.printDetails();
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("Model : Sedan")
+                .contains("Color : Bleu")
+                .contains("Actual speed : 0");
+    }
+
+    @Test
+    void givenDriver_whenChangeSpeed_thenDriverNamePrinted() {
+        // GIVEN
+        Driver driver = new Driver("John", 25);
+
+        // WHEN
+        car.changeSpeed(50, driver);
+
+        // THEN
+        assertThat(outputStreamCaptor.toString())
+                .contains("John change car speed to 50");
     }
 }
