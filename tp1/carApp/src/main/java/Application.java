@@ -6,9 +6,9 @@ public class Application {
 
         maCar.startCar(me);
         maCar.accelerate();
-        me.changeSpeed(maCar,80);
+        maCar.changeSpeed(maCar,80, me);
         maCar.slowDown();
-        me.changeSpeed(maCar,30);
+        maCar.changeSpeed(maCar,30, me);
         maCar.stopCar(me);
         System.out.println("finished");
     }
