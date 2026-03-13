@@ -1,0 +1,9 @@
+-Car :
+Nombres magiques
+Répétitions de code (affichage des détails)
+
+-Driver :
+Nombres magiques
+varaiable vitesse actuelle inutile dans changerVitesse()
+paramètre inutile dans arreterVoiture()
+responsabilité de démarrer et arreter à confier à car
