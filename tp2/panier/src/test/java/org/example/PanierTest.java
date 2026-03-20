@@ -52,4 +52,11 @@ public class PanierTest {
         //THEN
         assertThat(outputStreamCaptor.toString()).contains("G.DES.STOCKS:GESTIONSTOCK");
     }
+    @Test
+    public void should_return_contenu(){
+        //WHEN
+        String contenu = panier.getContenu();
+        //THEN
+        assertThat(contenu.contains("Contenu du panier"));
+    }
 }
